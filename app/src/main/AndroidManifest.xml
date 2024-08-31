@@ -15,12 +15,6 @@
         android:theme="@style/Theme.CookingInstructions"
         tools:targetApi="31">
         <activity
-            android:name=".Controller.DanhSachNhanSuActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity_NhanSu"
-            android:exported="false" />
-        <activity
             android:name=".Controller.Activity_RecipeDetail"
             android:exported="false" />
         <activity

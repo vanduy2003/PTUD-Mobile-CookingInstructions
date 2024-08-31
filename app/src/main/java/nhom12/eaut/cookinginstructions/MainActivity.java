@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                     // Đăng nhập thành công
                                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                                     // Chuyển đến màn hình chính hoặc thực hiện hành động tiếp theo
-                                    Intent intent = new Intent(MainActivity.this, Activity_NhanSu.class);
+                                    Intent intent = new Intent(MainActivity.this, Activity_Home.class);
                                     startActivity(intent);
                                 } else {
                                     // Mật khẩu không đúng
