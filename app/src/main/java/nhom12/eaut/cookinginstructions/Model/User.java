@@ -2,21 +2,80 @@ package nhom12.eaut.cookinginstructions.Model;
 
 
 public class User {
-    public String username;
-    public String email;
-    public String password;
-    public String profile_picture;
-    public String preferences;
+    private String username;
+    private String sex;
+    private String address;
+    private String avatar;
+    private String birthday;
+    private String phone;
+    private String email;
+    private String password;
 
-    public User() {
-    }
-
-    public User(String username, String email, String password, String profile_picture, String preferences) {
+    public User(String username, String email, String password, String sex, String address, String avatar, String birthday, String phone) {
         this.username = username;
+        this.sex = sex;
+        this.address = address;
+        this.avatar = avatar;
+        this.birthday = birthday;
+        this.phone = phone;
         this.email = email;
         this.password = password;
-        this.profile_picture = profile_picture;
-        this.preferences = preferences;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -25,39 +84,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setProfile_picture(String profile_picture) {
-        this.profile_picture = profile_picture;
-    }
-
-    public void setPreferences(String preferences) {
-        this.preferences = preferences;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPreferences() {
-        return preferences;
-    }
-
-    public String getProfile_picture() {
-        return profile_picture;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,10 +90,14 @@ public class MainActivity extends AppCompatActivity {
                                 String storedPassword = snapshot.child("password").getValue(String.class);
                                 if (storedPassword != null && storedPassword.equals(password)) {
                                     // Đăng nhập thành công
+                                    String uid = snapshot.getKey(); // Lấy UID của người dùng
+                                    saveUserId(uid); // Lưu UID vào SharedPreferences
                                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                                    // Chuyển đến màn hình chính hoặc thực hiện hành động tiếp theo
+
+                                    // Chuyển đến màn hình chính
                                     Intent intent = new Intent(MainActivity.this, Activity_Home.class);
                                     startActivity(intent);
+                                    finish();
                                 } else {
                                     // Mật khẩu không đúng
                                     Toast.makeText(MainActivity.this, "Sai mật khẩu!", Toast.LENGTH_SHORT).show();
@@ -108,8 +113,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w("Firebase", "loadUser:onCancelled", databaseError.toException());
                     }
-                }
-                );
+                });
+    }
+
+    private void saveUserId(String uid) {
+        SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userId", uid);
+        editor.apply();
     }
 
     @SuppressLint("MissingSuperCall")
