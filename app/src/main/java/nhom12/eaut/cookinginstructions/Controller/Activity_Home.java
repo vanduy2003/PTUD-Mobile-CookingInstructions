@@ -50,7 +50,6 @@ public class Activity_Home extends AppCompatActivity {
 
             if (userId != null) {
                 Intent intent = new Intent(Activity_Home.this, UpdateInfor.class);
-                System.out.println("Xuan Manh check Id To Activity Home " + userId);
                 intent.putExtra("userId", userId); // Truyền userId qua Intent
                 startActivity(intent);
             } else {

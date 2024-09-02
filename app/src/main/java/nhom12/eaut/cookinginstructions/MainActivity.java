@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                                 if (storedPassword != null && storedPassword.equals(password)) {
                                     // Đăng nhập thành công
                                     String uid = snapshot.getKey(); // Lấy UID của người dùng
-                                    System.out.println("Xuan Manh Check khi login: " + uid);
                                     saveUserId(uid); // Lưu UID vào SharedPreferences
                                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 

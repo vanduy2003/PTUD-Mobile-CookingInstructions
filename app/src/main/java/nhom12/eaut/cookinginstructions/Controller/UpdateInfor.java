@@ -17,6 +17,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,11 +28,12 @@ import nhom12.eaut.cookinginstructions.R;
 
 public class UpdateInfor extends AppCompatActivity {
 
-    private EditText emailEditText, phoneEditText, passwordEditText, addressEditText, usernameEditText, dobEditText;
+    private EditText emailEditText, phoneEditText, passwordEditText, addressEditText, usernameEditText, dobEditText, urlImg;
     private ImageView avatarImageView;
     private DatabaseReference mDatabase;
-    private String userId; // Thay vì FirebaseUser, bạn sử dụng userId từ Intent
-
+    private String userId;
+    private String avatarUrl; // Thay đổi: Thêm biến để lưu URL ảnh đại diện
+    FloatingActionButton btnThoat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class UpdateInfor extends AppCompatActivity {
         usernameEditText = findViewById(R.id.usernameEditText);
         dobEditText = findViewById(R.id.dobEditText);
         avatarImageView = findViewById(R.id.avatarImageView);
-
+        urlImg = findViewById(R.id.avatarUrlEditText);
         // Initialize Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -80,6 +82,10 @@ public class UpdateInfor extends AppCompatActivity {
         // Xử lý nút lưu
         Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(v -> saveUserInfo());
+        btnThoat = findViewById(R.id.btnThoat);
+        btnThoat.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void loadUserInfo() {
@@ -89,12 +95,13 @@ public class UpdateInfor extends AppCompatActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         // Lấy thông tin từ snapshot
+                        String urlAvatar = snapshot.child("avatar").getValue(String.class);
                         String email = snapshot.child("email").getValue(String.class);
                         String phone = snapshot.child("phone").getValue(String.class);
                         String username = snapshot.child("username").getValue(String.class);
                         String dob = snapshot.child("dob").getValue(String.class);
                         String address = snapshot.child("address").getValue(String.class);
-                        String avatarUrl = snapshot.child("avatar").getValue(String.class);
+                        avatarUrl = snapshot.child("avatar").getValue(String.class); // Thay đổi: Lấy URL ảnh đại diện
 
                         // Hiển thị thông tin lên giao diện
                         emailEditText.setText(email);
@@ -102,6 +109,7 @@ public class UpdateInfor extends AppCompatActivity {
                         usernameEditText.setText(username);
                         dobEditText.setText(dob);
                         addressEditText.setText(address);
+                        urlImg.setText(urlAvatar);
 
                         // Để tải ảnh đại diện từ URL, bạn có thể dùng thư viện như Glide hoặc Picasso
                         if (avatarUrl != null && !avatarUrl.isEmpty()) {
@@ -130,7 +138,8 @@ public class UpdateInfor extends AppCompatActivity {
         String newDob = dobEditText.getText().toString().trim();
         String newAddress = addressEditText.getText().toString().trim();
         String newPassword = passwordEditText.getText().toString().trim();
-
+        // Lưu URL ảnh đại diện mới nếu có
+        String newAvatarUrl = urlImg.getText().toString().trim(); // Giữ URL hiện tại nếu không thay đổi
         if (userId != null) {
             DatabaseReference userRef = mDatabase.child("Users").child(userId);
 
@@ -140,10 +149,14 @@ public class UpdateInfor extends AppCompatActivity {
             userRef.child("dob").setValue(newDob);
             userRef.child("address").setValue(newAddress);
 
+            // Cập nhật URL ảnh đại diện
+            if (newAvatarUrl != null ) {
+                userRef.child("avatar").setValue(newAvatarUrl);
+            }
+
             // Cập nhật mật khẩu
-            if (!newPassword.isEmpty()) {
-                // Firebase Authentication không thể cập nhật mật khẩu cho người dùng từ DatabaseReference
-                Toast.makeText(UpdateInfor.this, "Mật khẩu không thể cập nhật qua Firebase Database", Toast.LENGTH_SHORT).show();
+            if (newPassword != null && !newPassword.isEmpty()) {
+                userRef.child("password").setValue(newPassword);
             }
 
             Toast.makeText(UpdateInfor.this, "Thông tin đã được cập nhật", Toast.LENGTH_SHORT).show();
