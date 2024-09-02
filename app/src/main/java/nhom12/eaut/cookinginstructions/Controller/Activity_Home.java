@@ -3,7 +3,9 @@ package nhom12.eaut.cookinginstructions.Controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,9 @@ public class Activity_Home extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference categoriesRef;
 
+    EditText txtSearch;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,9 @@ public class Activity_Home extends AppCompatActivity {
         catagoryAdapter = new CatagoryAdapter(this, R.layout.layout_item_catagory, arr);
         gvCatagory = findViewById(R.id.gvDishList);
         gvCatagory.setAdapter(catagoryAdapter);
+
+        txtSearch = findViewById(R.id.txtSearch);
+
 
         loadCategories();
 
@@ -47,13 +55,49 @@ public class Activity_Home extends AppCompatActivity {
             intent.putExtra("CategoryId", selectedCategory.getId());
             startActivity(intent);
         });
+
+        txtSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Không cần xử lý
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchCategories(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                // Không cần xử lý
+            }
+        });
+
+    }
+
+    private void searchCategories(String query) {
+        if (query.isEmpty()) {
+            loadCategories(); // Load lại toàn bộ danh mục khi từ khóa tìm kiếm trống
+            return;
+        }
+
+        ArrayList<CatagoryItem> filteredList = new ArrayList<>();
+        for (CatagoryItem item : arr) {
+            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        catagoryAdapter = new CatagoryAdapter(this, R.layout.layout_item_catagory, filteredList);
+        gvCatagory.setAdapter(catagoryAdapter);
+        catagoryAdapter.notifyDataSetChanged();
     }
 
     private void loadCategories() {
         database = FirebaseDatabase.getInstance();
         DatabaseReference categoriesRef = database.getReference("Categories");
 
-        categoriesRef.addValueEventListener(new ValueEventListener() {
+        categoriesRef.addListenerForSingleValueEvent(new ValueEventListener() { // Sử dụng addListenerForSingleValueEvent để chỉ lắng nghe một lần
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arr.clear(); // Xóa dữ liệu cũ trước khi thêm dữ liệu mới
@@ -65,6 +109,8 @@ public class Activity_Home extends AppCompatActivity {
                         arr.add(category);
                     }
                 }
+                catagoryAdapter = new CatagoryAdapter(Activity_Home.this, R.layout.layout_item_catagory, arr);
+                gvCatagory.setAdapter(catagoryAdapter);
                 catagoryAdapter.notifyDataSetChanged();
             }
 
@@ -75,6 +121,4 @@ public class Activity_Home extends AppCompatActivity {
         });
     }
 
-
 }
-

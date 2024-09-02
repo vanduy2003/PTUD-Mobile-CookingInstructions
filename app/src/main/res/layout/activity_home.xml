@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:background="#FF8B3F"
         android:orientation="horizontal"
-        android:paddingTop="13dp"
-        android:paddingBottom="8dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="6dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
@@ -36,7 +36,7 @@
             android:backgroundTint="#FFFFFF"
             android:drawableLeft="@drawable/ic_baseline_person_24"
             android:drawablePadding="8dp"
-            android:hint="Tìm kiếm công thức"
+            android:hint="Tìm kiếm theo danh mục"
             android:padding="8dp"
             android:textColor="@color/black"
             android:textSize="18sp"
