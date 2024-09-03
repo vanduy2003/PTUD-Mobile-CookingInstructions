@@ -31,13 +31,8 @@ public class Activity_Home extends AppCompatActivity {
     ArrayList<CatagoryItem> arr = new ArrayList<>();
     private FirebaseDatabase database;
     private DatabaseReference categoriesRef;
-
-
     EditText txtSearch;
-
-
-
-    private ImageButton btnAcc;
+    private ImageButton btnAcc, btnFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +43,18 @@ public class Activity_Home extends AppCompatActivity {
         gvCatagory = findViewById(R.id.gvDishList);
         btnAcc = findViewById(R.id.btnAcount);
         gvCatagory.setAdapter(catagoryAdapter);
-
+        btnFavorite = findViewById(R.id.btnFavorite);
         txtSearch = findViewById(R.id.txtSearch);
 
 
         loadCategories();
 
+        // Lấy userId từ SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = preferences.getString("userId", null);
+
         // Khi người dùng nhấn nút tài khoản
         btnAcc.setOnClickListener(view -> {
-            // Lấy userId từ SharedPreferences
-            SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-            String userId = preferences.getString("userId", null);
-
             if (userId != null) {
                 Intent intent = new Intent(Activity_Home.this, UpdateInfor.class);
                 intent.putExtra("userId", userId); // Truyền userId qua Intent
@@ -95,6 +90,13 @@ public class Activity_Home extends AppCompatActivity {
             public void afterTextChanged(android.text.Editable s) {
                 // Không cần xử lý
             }
+        });
+
+        // Khi người dùng nhấn nút yêu thích
+        btnFavorite.setOnClickListener(view -> {
+            Intent intent = new Intent(Activity_Home.this, Activity_Favorite.class);
+            intent.putExtra("UserId", userId); // Truyền userId qua Intent
+            startActivity(intent);
         });
 
     }

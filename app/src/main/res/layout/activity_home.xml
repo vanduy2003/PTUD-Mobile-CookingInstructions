@@ -108,12 +108,12 @@
 
         <!-- Button thứ hai -->
         <ImageButton
-            android:id="@+id/btnShop"
+            android:id="@+id/btnFavorite"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="#00000000"
-            app:srcCompat="@drawable/shop" />
+            app:srcCompat="@drawable/tym" />
 
         <!-- Button thứ ba -->
         <ImageButton

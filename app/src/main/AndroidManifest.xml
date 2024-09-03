@@ -15,6 +15,9 @@
         android:theme="@style/Theme.CookingInstructions"
         tools:targetApi="31">
         <activity
+            android:name=".Controller.Activity_Favorite"
+            android:exported="false" />
+        <activity
             android:name=".Controller.UpdateInfor"
             android:exported="false" />
         <activity
