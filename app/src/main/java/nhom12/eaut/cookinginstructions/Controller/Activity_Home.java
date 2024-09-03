@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +31,9 @@ public class Activity_Home extends AppCompatActivity {
     ArrayList<CatagoryItem> arr = new ArrayList<>();
     private FirebaseDatabase database;
     private DatabaseReference categoriesRef;
-    private ImageButton btnAcc;
+    EditText txtSearch;
+    private ImageButton btnAcc, btnFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +43,18 @@ public class Activity_Home extends AppCompatActivity {
         gvCatagory = findViewById(R.id.gvDishList);
         btnAcc = findViewById(R.id.btnAcount);
         gvCatagory.setAdapter(catagoryAdapter);
+        btnFavorite = findViewById(R.id.btnFavorite);
+        txtSearch = findViewById(R.id.txtSearch);
+
 
         loadCategories();
 
+        // Lấy userId từ SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = preferences.getString("userId", null);
+
         // Khi người dùng nhấn nút tài khoản
         btnAcc.setOnClickListener(view -> {
-            // Lấy userId từ SharedPreferences
-            SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-            String userId = preferences.getString("userId", null);
-
             if (userId != null) {
                 Intent intent = new Intent(Activity_Home.this, UpdateInfor.class);
                 intent.putExtra("userId", userId); // Truyền userId qua Intent
@@ -67,13 +74,57 @@ public class Activity_Home extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+        txtSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Không cần xử lý
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchCategories(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                // Không cần xử lý
+            }
+        });
+
+        // Khi người dùng nhấn nút yêu thích
+        btnFavorite.setOnClickListener(view -> {
+            Intent intent = new Intent(Activity_Home.this, Activity_Favorite.class);
+            intent.putExtra("UserId", userId); // Truyền userId qua Intent
+            startActivity(intent);
+        });
+
+    }
+
+    private void searchCategories(String query) {
+        if (query.isEmpty()) {
+            loadCategories(); // Load lại toàn bộ danh mục khi từ khóa tìm kiếm trống
+            return;
+        }
+
+        ArrayList<CatagoryItem> filteredList = new ArrayList<>();
+        for (CatagoryItem item : arr) {
+            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        catagoryAdapter = new CatagoryAdapter(this, R.layout.layout_item_catagory, filteredList);
+        gvCatagory.setAdapter(catagoryAdapter);
+        catagoryAdapter.notifyDataSetChanged();
+
     }
 
     private void loadCategories() {
         database = FirebaseDatabase.getInstance();
         DatabaseReference categoriesRef = database.getReference("Categories");
 
-        categoriesRef.addValueEventListener(new ValueEventListener() {
+        categoriesRef.addListenerForSingleValueEvent(new ValueEventListener() { // Sử dụng addListenerForSingleValueEvent để chỉ lắng nghe một lần
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arr.clear(); // Xóa dữ liệu cũ trước khi thêm dữ liệu mới
@@ -85,6 +136,8 @@ public class Activity_Home extends AppCompatActivity {
                         arr.add(category);
                     }
                 }
+                catagoryAdapter = new CatagoryAdapter(Activity_Home.this, R.layout.layout_item_catagory, arr);
+                gvCatagory.setAdapter(catagoryAdapter);
                 catagoryAdapter.notifyDataSetChanged();
             }
 
@@ -95,6 +148,4 @@ public class Activity_Home extends AppCompatActivity {
         });
     }
 
-
 }
-

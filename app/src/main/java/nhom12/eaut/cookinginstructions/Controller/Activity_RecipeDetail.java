@@ -1,11 +1,14 @@
 package nhom12.eaut.cookinginstructions.Controller;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+import nhom12.eaut.cookinginstructions.Model.Favorite;
 import nhom12.eaut.cookinginstructions.Model.Recipe;
 import nhom12.eaut.cookinginstructions.Model.Step;
 import nhom12.eaut.cookinginstructions.R;
@@ -25,8 +30,10 @@ public class Activity_RecipeDetail extends AppCompatActivity {
     private TextView tvIngredient, txtNameF, txtTitle, txtDesc, tvSteps;
     private LinearLayout layoutSteps;
     private FirebaseDatabase database;
-    private DatabaseReference recipeRef;
+    private DatabaseReference recipeRef, favoriteRef;
     FloatingActionButton btnThoat;
+    Button btnTym;
+    private String userId;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -41,9 +48,17 @@ public class Activity_RecipeDetail extends AppCompatActivity {
         btnThoat = findViewById(R.id.btnThoat);
         txtDesc = findViewById(R.id.txtDesc);
         txtTitle = findViewById(R.id.txtTitle);
+        btnTym = findViewById(R.id.btnTym);
+
+        // Lấy userId từ SharedPreferences
+        userId = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("userId", null);
 
         String recipeId = getIntent().getStringExtra("RecipeId");
         loadRecipeDetails(recipeId);
+
+        btnTym.setOnClickListener(v -> {
+            addRecipeToFavorites(recipeId);
+        });
 
         btnThoat.setOnClickListener(v -> finish());
     }
@@ -99,4 +114,40 @@ public class Activity_RecipeDetail extends AppCompatActivity {
             }
         });
     }
+
+    private void addRecipeToFavorites(String recipeId) {
+        database = FirebaseDatabase.getInstance();
+        recipeRef = database.getReference("Recipes").child(recipeId);
+        favoriteRef = database.getReference("Favorites").child(userId).child(recipeId);
+
+        recipeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Recipe recipe = dataSnapshot.getValue(Recipe.class);
+                if (recipe != null) {
+                    // Tạo đối tượng Favorite với thông tin công thức
+                    Favorite favoriteRecipe = new Favorite(
+                            recipeId,
+                            recipe.getTitle(),
+                            recipe.getImg()
+                    );
+
+                    // Lưu đối tượng vào bảng Favorites
+                    favoriteRef.setValue(favoriteRecipe).addOnSuccessListener(aVoid -> {
+                        // Nếu thêm thành công
+                        Toast.makeText(Activity_RecipeDetail.this, "Đã thêm vào món yêu thích", Toast.LENGTH_SHORT).show();
+                    }).addOnFailureListener(e -> {
+                        // Nếu có lỗi xảy ra
+                        Toast.makeText(Activity_RecipeDetail.this, "Thêm vào món yêu thích thất bại", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Firebase", "addRecipeToFavorites:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
 }

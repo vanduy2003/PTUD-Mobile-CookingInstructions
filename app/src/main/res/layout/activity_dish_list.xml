@@ -27,7 +27,7 @@
             android:backgroundTint="#FFFFFF"
             android:drawableLeft="@drawable/ic_baseline_person_24"
             android:drawablePadding="8dp"
-            android:hint="Tìm kiếm công thức"
+            android:hint="Tìm kiếm theo món ăn"
             android:padding="8dp"
             android:textColor="@color/black"
             android:textSize="18sp"

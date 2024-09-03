@@ -61,6 +61,12 @@
 
 
             <!-- Address -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dobEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,11 +90,6 @@
                 android:hint="Ngày sinh"
                 android:layout_marginTop="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dobEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Email (Non-editable) -->
