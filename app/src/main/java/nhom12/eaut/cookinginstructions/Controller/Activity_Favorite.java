@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +29,7 @@ public class Activity_Favorite extends AppCompatActivity {
     private DatabaseReference favoritesRef;
     private ArrayList<Favorite> favoriteList;
     private FavoriteAdapter adapter;
+    FloatingActionButton btnThoat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,11 @@ public class Activity_Favorite extends AppCompatActivity {
             Intent intent = new Intent(Activity_Favorite.this, Activity_RecipeDetail.class);
             intent.putExtra("RecipeId", recipeId);
             startActivity(intent);
+        });
+
+        btnThoat = findViewById(R.id.btnThoat);
+        btnThoat.setOnClickListener(v -> {
+           finish();
         });
     }
 

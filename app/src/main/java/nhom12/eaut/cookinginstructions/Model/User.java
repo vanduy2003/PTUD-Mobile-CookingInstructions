@@ -7,21 +7,30 @@ public class User {
     private String address;
     private String avatar;
     private String birthday;
+    private String favoritefood;
     private String phone;
     private String email;
     private String password;
 
-    public User(String username, String email, String password, String sex, String address, String avatar, String birthday, String phone) {
+    public User(String username, String password, String email, String sex, String favoritefood, String birthday, String avatar, String address, String phone) {
         this.username = username;
-        this.sex = sex;
-        this.address = address;
-        this.avatar = avatar;
-        this.birthday = birthday;
-        this.phone = phone;
-        this.email = email;
         this.password = password;
+        this.email = email;
+        this.sex = sex;
+        this.favoritefood = favoritefood;
+        this.birthday = birthday;
+        this.avatar = avatar;
+        this.address = address;
+        this.phone = phone;
     }
 
+    public String getFavoritefood() {
+        return favoritefood;
+    }
+
+    public void setFavoritefood(String favoritefood) {
+        this.favoritefood = favoritefood;
+    }
     public String getUsername() {
         return username;
     }
