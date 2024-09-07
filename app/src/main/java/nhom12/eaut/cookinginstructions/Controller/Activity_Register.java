@@ -73,7 +73,7 @@ public class Activity_Register extends AppCompatActivity {
                         FirebaseUser User = mAuth.getCurrentUser();
                         if (User != null) {
                             String userId = User.getUid();
-                            nhom12.eaut.cookinginstructions.Model.User newUser = new User(username, email, password, null, null, null, null, null);
+                            nhom12.eaut.cookinginstructions.Model.User newUser = new User(username, password, email, null, null, null, null, null, null);
                             usersRef.child(userId).setValue(newUser)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {

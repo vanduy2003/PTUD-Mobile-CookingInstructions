@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                     // Chuyển đến màn hình chính
                                     Intent intent = new Intent(MainActivity.this, Activity_Home.class);
                                     startActivity(intent);
-                                    finish();
+
                                 } else {
                                     // Mật khẩu không đúng
                                     Toast.makeText(MainActivity.this, "Sai mật khẩu!", Toast.LENGTH_SHORT).show();

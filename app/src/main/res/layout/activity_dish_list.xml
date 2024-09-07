@@ -44,30 +44,17 @@
 
     <!-- GridView hiển thị danh mục -->
 
-    <ImageView
-        android:id="@+id/Banner"
-        android:layout_width="wrap_content"
-        android:layout_height="160dp"
-        app:layout_constraintBottom_toBottomOf="@id/gvDishList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/herder"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/banner"
-        tools:ignore="MissingConstraints" />
-
     <GridView
         android:id="@+id/gvDishList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:numColumns="2"
-        android:padding="3dp"
+        android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Banner" />
+        app:layout_constraintTop_toBottomOf="@+id/herder" />
 
     <!-- Phần navbar cố định ở cuối màn hình -->
 
