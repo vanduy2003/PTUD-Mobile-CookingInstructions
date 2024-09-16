@@ -70,7 +70,7 @@ public class Activity_RecipeDetail extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Nếu đã có trong yêu thích, đổi nút thành "Bỏ yêu thích"
+                    // Nếu đã có trong y yêu thích"
                     btnTym.setText("Bỏ thích");
                     isFavorite = true;  // Đánh dấu là đã yêu thích
                 } else {
