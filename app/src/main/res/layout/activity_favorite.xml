@@ -29,5 +29,16 @@
         android:layout_height="match_parent"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp" />
-
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnThoat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:contentDescription="Add"
+        android:src="@drawable/close"
+        app:backgroundTint="#E91E63"
+        app:tint="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </LinearLayout>

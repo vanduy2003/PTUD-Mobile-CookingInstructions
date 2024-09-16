@@ -34,6 +34,7 @@ public class Activity_RecipeDetail extends AppCompatActivity {
     FloatingActionButton btnThoat;
     Button btnTym;
     private String userId;
+    private boolean isFavorite = false;  // Biến để theo dõi tình trạng yêu thích
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -55,12 +56,44 @@ public class Activity_RecipeDetail extends AppCompatActivity {
 
         String recipeId = getIntent().getStringExtra("RecipeId");
         loadRecipeDetails(recipeId);
-
-        btnTym.setOnClickListener(v -> {
-            addRecipeToFavorites(recipeId);
-        });
+        checkFavoriteStatus(recipeId);
 
         btnThoat.setOnClickListener(v -> finish());
+    }
+
+    // Hàm kiểm tra xem công thức đã có trong danh sách yêu thích chưa
+    private void checkFavoriteStatus(String recipeId) {
+        database = FirebaseDatabase.getInstance();
+        favoriteRef = database.getReference("Favorites").child(userId).child(recipeId);
+
+        favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Nếu đã có trong yêu thích, đổi nút thành "Bỏ yêu thích"
+                    btnTym.setText("Bỏ thích");
+                    isFavorite = true;  // Đánh dấu là đã yêu thích
+                } else {
+                    // Nếu chưa có, nút sẽ hiển thị "Thêm vào yêu thích"
+                    btnTym.setText("Yêu thích");
+                    isFavorite = false; // Đánh dấu là chưa yêu thích
+                }
+
+                // Gán sự kiện click cho btnTym sau khi kiểm tra trạng thái
+                btnTym.setOnClickListener(v -> {
+                    if (isFavorite) {
+                        removeRecipeFromFavorites(recipeId);  // Xóa khỏi danh sách yêu thích
+                    } else {
+                        addRecipeToFavorites(recipeId);  // Thêm vào danh sách yêu thích
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Firebase", "checkFavoriteStatus:onCancelled", databaseError.toException());
+            }
+        });
     }
 
     private void loadRecipeDetails(String recipeId) {
@@ -116,7 +149,6 @@ public class Activity_RecipeDetail extends AppCompatActivity {
     }
 
     private void addRecipeToFavorites(String recipeId) {
-        database = FirebaseDatabase.getInstance();
         recipeRef = database.getReference("Recipes").child(recipeId);
         favoriteRef = database.getReference("Favorites").child(userId).child(recipeId);
 
@@ -125,19 +157,17 @@ public class Activity_RecipeDetail extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Recipe recipe = dataSnapshot.getValue(Recipe.class);
                 if (recipe != null) {
-                    // Tạo đối tượng Favorite với thông tin công thức
                     Favorite favoriteRecipe = new Favorite(
                             recipeId,
                             recipe.getTitle(),
                             recipe.getImg()
                     );
 
-                    // Lưu đối tượng vào bảng Favorites
                     favoriteRef.setValue(favoriteRecipe).addOnSuccessListener(aVoid -> {
-                        // Nếu thêm thành công
                         Toast.makeText(Activity_RecipeDetail.this, "Đã thêm vào món yêu thích", Toast.LENGTH_SHORT).show();
+                        btnTym.setText("Bỏ thích");
+                        isFavorite = true;  // Cập nhật trạng thái sau khi thêm
                     }).addOnFailureListener(e -> {
-                        // Nếu có lỗi xảy ra
                         Toast.makeText(Activity_RecipeDetail.this, "Thêm vào món yêu thích thất bại", Toast.LENGTH_SHORT).show();
                     });
                 }
@@ -147,6 +177,18 @@ public class Activity_RecipeDetail extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("Firebase", "addRecipeToFavorites:onCancelled", databaseError.toException());
             }
+        });
+    }
+
+    private void removeRecipeFromFavorites(String recipeId) {
+        favoriteRef = database.getReference("Favorites").child(userId).child(recipeId);
+
+        favoriteRef.removeValue().addOnSuccessListener(aVoid -> {
+            Toast.makeText(Activity_RecipeDetail.this, "Đã xóa khỏi món yêu thích", Toast.LENGTH_SHORT).show();
+            btnTym.setText("Yêu thích");
+            isFavorite = false;  // Cập nhật trạng thái sau khi xóa
+        }).addOnFailureListener(e -> {
+            Toast.makeText(Activity_RecipeDetail.this, "Xóa khỏi món yêu thích thất bại", Toast.LENGTH_SHORT).show();
         });
     }
 
