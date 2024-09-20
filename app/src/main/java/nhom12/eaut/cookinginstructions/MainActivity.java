@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         // Xử lý sự kiện khi nhấn chữ "Đăng ký"
         signupText.setOnClickListener(v -> {
             // Chuyển đến màn hình đăng ký
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         if (email != null && password != null) {
             emailEditText.setText(email);
             passwordEditText.setText(password);
-            loginUser(email, password);
+
         }
     }
 
