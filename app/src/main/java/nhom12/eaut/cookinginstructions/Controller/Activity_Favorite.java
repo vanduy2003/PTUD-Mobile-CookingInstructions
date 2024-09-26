@@ -1,5 +1,6 @@
 package nhom12.eaut.cookinginstructions.Controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import nhom12.eaut.cookinginstructions.MainActivity;
 import nhom12.eaut.cookinginstructions.Model.Favorite;
 import nhom12.eaut.cookinginstructions.R;
 import nhom12.eaut.cookinginstructions.Adapter.FavoriteAdapter;
@@ -61,13 +63,19 @@ public class Activity_Favorite extends AppCompatActivity {
         });
     }
 
+
     private void loadFavoriteRecipes(String userId) {
         database = FirebaseDatabase.getInstance();
         favoritesRef = database.getReference("Favorites").child(userId);
 
+        ProgressDialog progressDialog = new ProgressDialog(Activity_Favorite.this);
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.show();
+
         favoritesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
                 favoriteList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Favorite favorite = snapshot.getValue(Favorite.class);
@@ -78,6 +86,7 @@ public class Activity_Favorite extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
                 Log.w("Firebase", "loadFavoriteRecipes:onCancelled", databaseError.toException());
             }
         });

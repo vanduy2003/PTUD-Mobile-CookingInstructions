@@ -7,12 +7,12 @@
         android:width="164dp"
         android:height="56dp"/>
     <gradient
-        android:startColor="#FFEB3B"
-        android:endColor="#FF6E40"
+        android:startColor="#00B0FF"
+        android:endColor="#7EF0FF"
         />
     <corners android:radius="10dp"/>
     <stroke
         android:width="5dp"
-        android:color="#41C4FF"/>
+        android:color="#FF5722"/>
 
 </shape>

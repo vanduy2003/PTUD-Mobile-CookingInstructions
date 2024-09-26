@@ -129,6 +129,22 @@
                 <!-- Các bước làm và hình ảnh sẽ được thêm động vào đây -->
             </LinearLayout>
 
+            <!-- Thêm VideoView để hiển thị video -->
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Video hướng dẫn:"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp" />
+
             <TextView
                 android:id="@+id/txtAddress"
                 android:layout_width="match_parent"
@@ -158,6 +174,4 @@
         android:src="@drawable/close"
         app:backgroundTint="#E91E63"
         app:tint="@android:color/white" />
-
-
 </RelativeLayout>

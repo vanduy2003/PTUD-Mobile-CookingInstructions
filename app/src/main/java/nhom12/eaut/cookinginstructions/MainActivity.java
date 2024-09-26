@@ -4,6 +4,7 @@ import static android.app.ProgressDialog.show;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,12 +61,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         // Xử lý sự kiện khi nhấn chữ "Đăng ký"
         signupText.setOnClickListener(v -> {
             // Chuyển đến màn hình đăng ký
-             Intent intent = new Intent(MainActivity.this, Activity_Register.class);
-             startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, Activity_Register.class);
+            startActivity(intent);
         });
 
         Intent intent = getIntent();
@@ -75,47 +75,58 @@ public class MainActivity extends AppCompatActivity {
         if (email != null && password != null) {
             emailEditText.setText(email);
             passwordEditText.setText(password);
-
         }
     }
 
     private void loginUser(String email, String password) {
-        // Truy vấn dữ liệu trong bảng Users
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Vui lòng nhập email và mật khẩu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Đang đăng nhập...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         usersRef.orderByChild("email").equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        progressDialog.dismiss();
+                        Log.d("Login", "onDataChange called");
                         if (dataSnapshot.exists()) {
-                            // Lặp qua kết quả để kiểm tra mật khẩu
+                            Log.d("Login", "User exists");
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 String storedPassword = snapshot.child("password").getValue(String.class);
                                 if (storedPassword != null && storedPassword.equals(password)) {
-                                    // Đăng nhập thành công
-                                    String uid = snapshot.getKey(); // Lấy UID của người dùng
-                                    saveUserId(uid); // Lưu UID vào SharedPreferences
+                                    Log.d("Login", "Password matches");
+                                    String uid = snapshot.getKey();
+                                    saveUserId(uid);
                                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-
-                                    // Chuyển đến màn hình chính
                                     Intent intent = new Intent(MainActivity.this, Activity_Home.class);
                                     startActivity(intent);
-
+                                    finish();
                                 } else {
-                                    // Mật khẩu không đúng
+                                    Log.d("Login", "Password does not match");
                                     Toast.makeText(MainActivity.this, "Sai mật khẩu!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else {
-                            // Email không tồn tại
+                            Log.d("Login", "Email does not exist");
                             Toast.makeText(MainActivity.this, "Email không tồn tại!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+                        progressDialog.dismiss();
                         Log.w("Firebase", "loadUser:onCancelled", databaseError.toException());
+                        Toast.makeText(MainActivity.this, "Lỗi kết nối đến Firebase. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 
     private void saveUserId(String uid) {
         SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -124,26 +135,5 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed () {
-        // Tao Dialog xac nhan thoat
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Xác nhận");
-        builder.setMessage("Bạn có muốn thoát ứng dụng không?");
-        builder.setIcon(R.mipmap.cooking);
-        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.create().show();
-    }
+
 }

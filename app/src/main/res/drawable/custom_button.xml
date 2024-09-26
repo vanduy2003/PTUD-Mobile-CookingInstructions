@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <size
         android:width="164dp"
-        android:height="56dp"/>
+        android:height="45dp"/>
     <gradient
         android:startColor="#27BCFF"
         android:endColor="#FF2770"

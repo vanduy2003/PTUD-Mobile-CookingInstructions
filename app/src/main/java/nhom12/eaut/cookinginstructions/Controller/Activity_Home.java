@@ -1,5 +1,8 @@
 package nhom12.eaut.cookinginstructions.Controller;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -147,5 +150,30 @@ public class Activity_Home extends AppCompatActivity {
             }
         });
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        // Tao Dialog xac nhan thoat
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xác nhận");
+        builder.setMessage("Bạn có muốn thoát ứng dụng không?");
+        builder.setIcon(R.mipmap.cooking);
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Gọi super.onBackPressed() sau khi người dùng xác nhận thoát
+                Activity_Home.super.onBackPressed();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel(); // Đóng dialog nếu chọn "Không"
+            }
+        });
+        builder.create().show();
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package nhom12.eaut.cookinginstructions.Controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,8 +68,15 @@ public class Activity_Register extends AppCompatActivity {
             return;
         }
 
+        ProgressDialog progressDialog = new ProgressDialog(Activity_Register.this);
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
+                    progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         FirebaseUser User = mAuth.getCurrentUser();
                         if (User != null) {

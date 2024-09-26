@@ -8,6 +8,7 @@ public class Recipe {
     private String img;
     private String title;
     private String description;
+    private String urlVideo;
     private List<String> ingredients;
     private List<Step> steps;
 
@@ -23,6 +24,14 @@ public class Recipe {
         this.description = description;
         this.ingredients = ingredients;
         this.steps = steps;
+    }
+
+    public String getUrlVideo() {
+        return urlVideo;
+    }
+
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
     }
 
     public String getId() {

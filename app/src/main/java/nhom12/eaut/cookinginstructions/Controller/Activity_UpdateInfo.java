@@ -1,5 +1,6 @@
 package nhom12.eaut.cookinginstructions.Controller;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,7 +30,7 @@ import nhom12.eaut.cookinginstructions.R;
 
 public class Activity_UpdateInfo extends AppCompatActivity {
 
-    private EditText emailEditText, phoneEditText, passwordEditText, addressEditText, usernameEditText, avatarUrlEditText, txtBio;
+    private EditText emailEditText, phoneEditText, passwordEditText, addressEditText, usernameEditText, avatarUrlEditText, txtBio, txtSex, txtBirthday;
     private DatabaseReference mDatabase;
     private String userId;
     private String avatarUrl; // Thay đổi: Thêm biến để lưu URL ảnh đại diện
@@ -37,6 +38,7 @@ public class Activity_UpdateInfo extends AppCompatActivity {
     Button saveButton;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class Activity_UpdateInfo extends AppCompatActivity {
         avatarUrlEditText = findViewById(R.id.avatarUrlEditText);
         saveButton = findViewById(R.id.saveButton);
         btnThoat = findViewById(R.id.btnThoat);
+        txtBirthday = findViewById(R.id.txtBirthday);
+        txtSex = findViewById(R.id.txtSex);
 
         // Get the userId from the Intent
         userId = getIntent().getStringExtra("userId");
@@ -73,6 +77,8 @@ public class Activity_UpdateInfo extends AppCompatActivity {
                     String username = dataSnapshot.child("username").getValue(String.class);
                     String avatarUrl = dataSnapshot.child("avatar").getValue(String.class);
                     String bio = dataSnapshot.child("favoritefood").getValue(String.class);
+                    String sex = dataSnapshot.child("sex").getValue(String.class);
+                    String birthday = dataSnapshot.child("birthday").getValue(String.class);
 
                     // Update UI with retrieved data
                     emailEditText.setText(email);
@@ -82,6 +88,8 @@ public class Activity_UpdateInfo extends AppCompatActivity {
                     usernameEditText.setText(username);
                     txtBio.setText(bio);
                     avatarUrlEditText.setText(avatarUrl);
+                    txtSex.setText(sex);
+                    txtBirthday.setText(birthday);
                 } else {
                     Toast.makeText(Activity_UpdateInfo.this, "User data not found", Toast.LENGTH_SHORT).show();
                 }
@@ -113,6 +121,8 @@ public class Activity_UpdateInfo extends AppCompatActivity {
         String username = usernameEditText.getText().toString().trim();
         String avatarUrl = avatarUrlEditText.getText().toString().trim();
         String bio = txtBio.getText().toString().trim();
+        String sex = txtSex.getText().toString().trim();
+        String birthday = txtBirthday.getText().toString().trim();
 
         // Update user data in Firebase
         mDatabase.child("email").setValue(email);
@@ -121,7 +131,9 @@ public class Activity_UpdateInfo extends AppCompatActivity {
         mDatabase.child("address").setValue(address);
         mDatabase.child("username").setValue(username);
         mDatabase.child("avatar").setValue(avatarUrl);
-        mDatabase.child("bio").setValue(bio)
+        mDatabase.child("sex").setValue(sex);
+        mDatabase.child("birthday").setValue(birthday);
+        mDatabase.child("favoritefood").setValue(bio)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(Activity_UpdateInfo.this, "User data updated successfully", Toast.LENGTH_SHORT).show();

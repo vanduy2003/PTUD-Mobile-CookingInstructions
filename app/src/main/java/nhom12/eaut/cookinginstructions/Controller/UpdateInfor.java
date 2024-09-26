@@ -1,6 +1,9 @@
 package nhom12.eaut.cookinginstructions.Controller;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -18,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import nhom12.eaut.cookinginstructions.MainActivity;
 import nhom12.eaut.cookinginstructions.R;
 
 public class UpdateInfor extends AppCompatActivity {
@@ -25,7 +29,7 @@ public class UpdateInfor extends AppCompatActivity {
     ImageView imgAvatar;
     TextView txtName, txtSex, txtEmail, txtPhone, txtAddress, txtFavorite, txtBirthday;
     FloatingActionButton btnThoat;
-    Button btnUpdate;
+    Button btnUpdate, btnDangxuat;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,16 +47,22 @@ public class UpdateInfor extends AppCompatActivity {
         imgAvatar = findViewById(R.id.imgAvatar);
         btnUpdate = findViewById(R.id.btnUpdate);
         txtSex = findViewById(R.id.txtSex);
+        btnDangxuat = findViewById(R.id.btnDangxuat);
 
         String userId = getIntent().getStringExtra("userId");
 
         // Thiết lập Firebase Database reference
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId); // Thay "userId" bằng id thực tế của người dùng
 
+        ProgressDialog progressDialog = new ProgressDialog(UpdateInfor.this);
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.show();
+
         // Truy vấn dữ liệu từ Firebase
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
                 if (dataSnapshot.exists()) {
                     // Lấy dữ liệu từ DataSnapshot
                     String name = dataSnapshot.child("username").getValue(String.class);
@@ -83,6 +93,7 @@ public class UpdateInfor extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Xử lý lỗi truy vấn
+                progressDialog.dismiss();
                 Toast.makeText(UpdateInfor.this, "Lỗi: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -94,7 +105,29 @@ public class UpdateInfor extends AppCompatActivity {
             startActivity(intent);
         });
 
-
+        btnDangxuat.setOnClickListener(v -> {
+            // Tao Dialog xac nhan thoat
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xác nhận");
+            builder.setMessage("Bạn có muốn đăng xuất không?");
+            builder.setIcon(R.mipmap.cooking);
+            builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Gọi super.onBackPressed() sau khi người dùng xác nhận thoát
+                    Intent intent = new Intent(UpdateInfor.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel(); // Đóng dialog nếu chọn "Không"
+                }
+            });
+            builder.create().show();
+        });
 
         btnThoat.setOnClickListener(v -> finish());
     }
