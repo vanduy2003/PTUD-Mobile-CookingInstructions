@@ -1,16 +1,13 @@
-package nhom12.eaut.cookinginstructions.Controller;
+package nhom13.eaut.cookinginstructions.Controller;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,10 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import nhom12.eaut.cookinginstructions.MainActivity;
-import nhom12.eaut.cookinginstructions.Model.Favorite;
-import nhom12.eaut.cookinginstructions.R;
-import nhom12.eaut.cookinginstructions.Adapter.FavoriteAdapter;
+import nhom13.eaut.cookinginstructions.Model.Favorite;
+import nhom13.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.Adapter.FavoriteAdapter;
 
 public class Activity_Favorite extends AppCompatActivity {
     private ListView lvFavorites;

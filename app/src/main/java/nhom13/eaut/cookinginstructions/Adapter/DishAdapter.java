@@ -1,7 +1,6 @@
-package nhom12.eaut.cookinginstructions.Adapter;
+package nhom13.eaut.cookinginstructions.Adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import nhom12.eaut.cookinginstructions.Model.DishItem;
-import nhom12.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.Model.DishItem;
+import nhom13.eaut.cookinginstructions.R;
 
 public class DishAdapter extends ArrayAdapter<DishItem> {
     Activity context;

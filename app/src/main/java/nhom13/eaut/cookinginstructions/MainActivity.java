@@ -1,11 +1,9 @@
-package nhom12.eaut.cookinginstructions;
+package nhom13.eaut.cookinginstructions;
 
 import static android.app.ProgressDialog.show;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,8 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import nhom12.eaut.cookinginstructions.Controller.Activity_Home;
-import nhom12.eaut.cookinginstructions.Controller.Activity_Register;
+import nhom13.eaut.cookinginstructions.Controller.Activity_Home;
+import nhom13.eaut.cookinginstructions.Controller.Activity_Register;
 
 public class MainActivity extends AppCompatActivity {
 

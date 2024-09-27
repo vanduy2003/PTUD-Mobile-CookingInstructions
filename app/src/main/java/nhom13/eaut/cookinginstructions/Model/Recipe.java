@@ -1,4 +1,4 @@
-package nhom12.eaut.cookinginstructions.Model;
+package nhom13.eaut.cookinginstructions.Model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package nhom12.eaut.cookinginstructions.Controller;
+package nhom13.eaut.cookinginstructions.Controller;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -19,15 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import android.widget.Button;
-import android.widget.ImageButton;
+
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import nhom12.eaut.cookinginstructions.Adapter.CatagoryAdapter;
-import nhom12.eaut.cookinginstructions.Model.CatagoryItem;
-import nhom12.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.Adapter.CatagoryAdapter;
+import nhom13.eaut.cookinginstructions.Model.CatagoryItem;
+import nhom13.eaut.cookinginstructions.R;
 public class Activity_Home extends AppCompatActivity {
     GridView gvCatagory;
     CatagoryAdapter catagoryAdapter;

@@ -1,4 +1,4 @@
-package nhom12.eaut.cookinginstructions.Model;
+package nhom13.eaut.cookinginstructions.Model;
 
 public class Step {
     private int stepNumber;

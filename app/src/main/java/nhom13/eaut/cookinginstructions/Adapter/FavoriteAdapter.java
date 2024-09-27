@@ -1,4 +1,4 @@
-package nhom12.eaut.cookinginstructions.Adapter;
+package nhom13.eaut.cookinginstructions.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import nhom12.eaut.cookinginstructions.Model.Favorite;
-import nhom12.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.Model.Favorite;
+import nhom13.eaut.cookinginstructions.R;
 
 public class FavoriteAdapter extends ArrayAdapter<Favorite> {
     private Context context;

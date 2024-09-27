@@ -1,4 +1,4 @@
-package nhom12.eaut.cookinginstructions.Controller;
+package nhom13.eaut.cookinginstructions.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import nhom12.eaut.cookinginstructions.Adapter.DishAdapter;
-import nhom12.eaut.cookinginstructions.Model.DishItem;
-import nhom12.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.Adapter.DishAdapter;
+import nhom13.eaut.cookinginstructions.Model.DishItem;
+import nhom13.eaut.cookinginstructions.R;
 
 public class Activity_DishList extends AppCompatActivity {
     // Khai báo các thành phần

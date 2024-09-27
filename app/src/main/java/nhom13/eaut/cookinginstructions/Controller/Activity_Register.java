@@ -1,4 +1,4 @@
-package nhom12.eaut.cookinginstructions.Controller;
+package nhom13.eaut.cookinginstructions.Controller;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,9 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-import nhom12.eaut.cookinginstructions.MainActivity;
-import nhom12.eaut.cookinginstructions.Model.User;
-import nhom12.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.MainActivity;
+import nhom13.eaut.cookinginstructions.Model.User;
+import nhom13.eaut.cookinginstructions.R;
 
 public class Activity_Register extends AppCompatActivity {
 
@@ -81,7 +81,7 @@ public class Activity_Register extends AppCompatActivity {
                         FirebaseUser User = mAuth.getCurrentUser();
                         if (User != null) {
                             String userId = User.getUid();
-                            nhom12.eaut.cookinginstructions.Model.User newUser = new User(username, password, email, null, null, null, null, null, null);
+                            nhom13.eaut.cookinginstructions.Model.User newUser = new User(username, password, email, null, null, null, null, null, null);
                             usersRef.child(userId).setValue(newUser)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {

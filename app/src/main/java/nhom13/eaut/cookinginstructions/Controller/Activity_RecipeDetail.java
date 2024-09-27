@@ -1,9 +1,8 @@
-package nhom12.eaut.cookinginstructions.Controller;
+package nhom13.eaut.cookinginstructions.Controller;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +10,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,14 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import nhom12.eaut.cookinginstructions.Model.Favorite;
-import nhom12.eaut.cookinginstructions.Model.Recipe;
-import nhom12.eaut.cookinginstructions.Model.Step;
-import nhom12.eaut.cookinginstructions.R;
+import nhom13.eaut.cookinginstructions.Model.Favorite;
+import nhom13.eaut.cookinginstructions.Model.Recipe;
+import nhom13.eaut.cookinginstructions.Model.Step;
+import nhom13.eaut.cookinginstructions.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class Activity_RecipeDetail extends AppCompatActivity {
-    private TextView tvIngredient, txtNameF, txtTitle, txtDesc, tvSteps;
+    private TextView tvIngredient, txtNameF, txtTitle, txtDesc, tvSteps, txtTitleVideo;
     private LinearLayout layoutSteps;
     private FirebaseDatabase database;
     private DatabaseReference recipeRef, favoriteRef;
@@ -58,6 +55,7 @@ public class Activity_RecipeDetail extends AppCompatActivity {
         txtDesc = findViewById(R.id.txtDesc);
         txtTitle = findViewById(R.id.txtTitle);
         btnTym = findViewById(R.id.btnTym);
+        txtTitleVideo = findViewById(R.id.textView5);
         btnShare = findViewById(R.id.btnShare);
         webView = findViewById(R.id.webView);
 
@@ -163,25 +161,30 @@ public class Activity_RecipeDetail extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressDialog.dismiss();
                 Recipe recipe = dataSnapshot.getValue(Recipe.class);
-
-                if (recipe != null) {
                     txtNameF.setText(recipe.getTitle());
                     txtDesc.setText(recipe.getDescription());
                     txtTitle.setText(recipe.getTitle());
                     imageUrl = recipe.getImg();  // Lưu URL hình ảnh để chia sẻ
 
-                    // Cấu hình WebView để hiển thị và phát video trong app
-                    webView.getSettings().setJavaScriptEnabled(true);  // Kích hoạt JavaScript
-                    webView.getSettings().setDomStorageEnabled(true);  // Kích hoạt DOM storage
-                    webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);  // Cho phép mở cửa sổ mới
-                    webView.getSettings().setMediaPlaybackRequiresUserGesture(false);  // Cho phép phát media không cần thao tác người dùng
+                    if (recipe.getUrlVideo() != null && !recipe.getUrlVideo().isEmpty()) {
+                        // Cấu hình WebView để hiển thị và phát video trong app
+                        webView.getSettings().setJavaScriptEnabled(true);  // Kích hoạt JavaScript
+                        webView.getSettings().setDomStorageEnabled(true);  // Kích hoạt DOM storage
+                        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);  // Cho phép mở cửa sổ mới
+                        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);  // Cho phép phát media không cần thao tác người dùng
 
-                    // Sử dụng WebViewClient để không mở ứng dụng bên ngoài
-                    webView.setWebViewClient(new WebViewClient());
+                        // Sử dụng WebViewClient để không mở ứng dụng bên ngoài
+                        webView.setWebViewClient(new WebViewClient());
 
-                    // Hiển thị video YouTube nhúng
-                    String youtubeEmbedUrl = "https://www.youtube.com/embed/" + extractYouTubeVideoId(recipe.getUrlVideo());
-                    webView.loadUrl(youtubeEmbedUrl);
+                        // Hiển thị video YouTube nhúng
+                        String youtubeEmbedUrl = "https://www.youtube.com/embed/" + extractYouTubeVideoId(recipe.getUrlVideo());
+                        webView.loadUrl(youtubeEmbedUrl);
+
+                    }else {
+                        // Ẩn tiêu đề video và WebView khi không có URL video
+                        txtTitleVideo.setVisibility(View.GONE);
+                        webView.setVisibility(View.GONE);
+                    }
 
                     // Hiển thị nguyên liệu
                     StringBuilder ingredients = new StringBuilder();
@@ -213,7 +216,6 @@ public class Activity_RecipeDetail extends AppCompatActivity {
                         layoutSteps.addView(stepImageView);
                     }
                 }
-            }
 
             // Hàm trích xuất ID video từ URL YouTube
             private String extractYouTubeVideoId(String videoUrl) {

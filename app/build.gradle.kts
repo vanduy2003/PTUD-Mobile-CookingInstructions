@@ -5,15 +5,15 @@ plugins {
 
 
 android {
-    namespace = "nhom12.eaut.cookinginstructions"
+    namespace = "nhom13.eaut.cookinginstructions"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "nhom12.eaut.cookinginstructions"
+        applicationId = "nhom13.eaut.cookinginstructions"
         minSdk = 24
         targetSdk = 34
-        versionCode = 3
-        versionName = "3.0"
+        versionCode = 4
+        versionName = "3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
